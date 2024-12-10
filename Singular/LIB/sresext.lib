@@ -13,17 +13,13 @@ schreyerSyzExt(m);            (refined) Schreyer syzygy of a module over the ext
 sresExt(m,p);                 free resolution of module m over the exterior algebra using refined Schreyer alg        
 mresExt(m,p);                 minimal free resolution of module m over the exterior algebra using refined Schreyer alg
 sheafCohBGGsres(M,l,h)        cohomology of twists of the coherent sheaf F on P^n
-                              associated to coker(M). The range of twists is determined by @code{l},
-                              @code{h}.
+                              associated to coker(M). The range of twists is determined by l,h.
 ";
 
-static proc mod_init()
-{
 LIB "nctools.lib"; // for ncalg
 LIB "matrix.lib"; // for submat
 LIB "sheafcoh.lib"; // for displayCohom
 //LIB "tst.lib"; tst_init(); tst_ignore("// ** loaded "); tst_ignore("// ** _ is no standard basis");
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -424,8 +420,7 @@ static proc sres_ext_(module m, int p)
 proc sresExt(module m, int p) 
 "USAGE:   srexExt(m,p); m a module over the polynomial ring.
 RETURN:   resolution
-PURPOSE:  to compute the minimal free resolution of m, 
-          where m represents a module over the exterior algebra, up to pth cohomological degree. 
+PURPOSE:  to compute the minimal free resolution of m, where m represents a module over the exterior algebra, up to pth cohomological degree. 
 THEORY:   
 SEE ALSO: mresExt, schreyerSyzExt
 EXAMPLE: example sresExt; shows an example
@@ -452,7 +447,7 @@ EXAMPLE: example sresExt; shows an example
   return(ans_res);
 }
 example
-{"EXAMPLE:";
+{"EXAMPLE:";echo=2;
   ring r = 0,(x,y,z),dp;
   def e = Exterior(); setring e;
   vector f1 = [x,y,0,z,0,0];
@@ -569,8 +564,7 @@ static proc gr_than_for_res(vector s, vector v, list L)
 proc mresExt(module m, int p)
 "USAGE:   mresExt(m,p); m a module over the polynomial ring.
 RETURN:   resolution
-PURPOSE:  to compute the minimal free resolution of m, 
-          where m represents a module over the exterior algebra, up to pth cohomological degree. 
+PURPOSE:  to compute the minimal free resolution of m, where m represents a module over the exterior algebra, up to pth cohomological degree. 
 THEORY:   
 SEE ALSO: sresExt, schreyerSyzExt
 EXAMPLE: example mresExt; shows an example
@@ -610,7 +604,7 @@ EXAMPLE: example mresExt; shows an example
   return(quo_res);
 }
 example
-{"EXAMPLE:";
+{"EXAMPLE:";echo=2;
   ring r = 0,(x,y,z),dp;
   def E = Exterior();
   vector f1 = [x,y,0,z,0,0];
@@ -624,14 +618,13 @@ example
 
 proc sheafCohBGGsres(module M,int l,int h)
 "USAGE:   sheafCohBGGsres(M,l,h);    M module, l,h int
-ASSUME:  @code{M} is graded, and it comes assigned with an admissible degree
-         vector as an attribute, @code{h>=l}, and the basering has @code{n+1}
+ASSUME:  M is graded, and it comes assigned with an admissible degree
+         vector as an attribute, h>=l, and the basering has n+1
          variables.
 RETURN:  intmat, cohomology of twists of the coherent sheaf F on P^n
-         associated to coker(M). The range of twists is determined by @code{l},
-         @code{h}.
+         associated to coker(M). The range of twists is determined by l, h.
 DISPLAY: The intmat is displayed in a diagram of the following form:
-         with @code{displayCohom(A,l,h,nvars(r)-1);}@*
+         with displayCohom(A,l,h,nvars(r)-1);
   @format
                 l            l+1                      h
   ----------------------------------------------------------
@@ -644,14 +637,14 @@ DISPLAY: The intmat is displayed in a diagram of the following form:
   @end format
          A @code{'-'} in the diagram refers to a zero entry; a @code{'*'}
          refers to a negative entry (= dimension not yet determined).
-         refers to a not computed dimension. @*
+         refers to a not computed dimension. 
 NOTE:    This procedure is based on the Bernstein-Gel'fand-Gel'fand
          correspondence and on Tate resolution ( see [Eisenbud, Floystad,
          Schreyer: Sheaf cohomology and free resolutions over exterior
-         algebras, Trans AMS 355 (2003)] ).@*
-         @code{sheafCohBGG(M,l,h)} does not compute all values in the above
-         table. To determine all values of @code{h^i(F(d))}, @code{d=l..h},
-         use @code{sheafCohBGG(M,l-n,h+n)}.
+         algebras, Trans AMS 355 (2003)] ).
+         sheafCohBGG(M,l,h) does not compute all values in the above
+         table. To determine all values of h^i(F(d)), d=l..h,
+         use sheafCohBGG(M,l-n,h+n).
 SEE ALSO: sheafCoh, dimH, displayCohom
 EXAMPLE: example sheafCohBGG; shows an example
 "
@@ -689,7 +682,7 @@ EXAMPLE: example sheafCohBGG; shows an example
      w[i]=-bound-1;
   }
   attrib(EM,"isHomog",w);
-  resoltuion temp_res = mresExt(EM,bound1+1);
+  resolution temp_res = mresExt(EM,bound1+1);
   list L;
   for (i = 1; i <= bound1; i++){
     L[i] = temp_res[i];
@@ -744,7 +737,7 @@ example
   //-------------------------------------------
   ring r=0,x(1..5),dp;
   module M=0;
-  intmat A=sheafCohBGG_sres(M,-9,4);
+  intmat A=sheafCohBGGsres(M,-9,4);
   A;
   displayCohom(A,-9,4,nvars(r)-1);
   // cohomology of cotangential bundle on P^3:
@@ -754,7 +747,7 @@ example
   module M=T1[3];
   intvec v=2,2,2,2,2,2;
   attrib(M,"isHomog",v);
-  intmat B=sheafCohBGG_sres(M,-8,4);
+  intmat B=sheafCohBGGsres(M,-8,4);
   B;
   displayCohom(B,-8,4,nvars(R)-1);
 }
